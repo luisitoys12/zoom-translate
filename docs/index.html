@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ZoomTranslate — Open Source Real-Time Meeting Translator</title>
+<meta name="description" content="Free, open source real-time translation for Zoom, Google Meet and Teams. Chrome extension + web dashboard. Compete with Kudo, Interprefy and Wordly.">
+<meta property="og:title" content="ZoomTranslate — Free Real-Time Meeting Translator">
+<meta property="og:description" content="Open source. No limits. Translate any meeting in real time.">
+<meta property="og:url" content="https://luisitoys12.github.io/zoom-translate">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root,[data-theme="light"]{--bg:#f7f6f2;--surface:#f9f8f5;--surface-2:#fff;--border:rgba(40,37,29,.1);--text:#28251d;--muted:#7a7974;--faint:#bab9b4;--primary:#01696f;--primary-h:#0c4e54;--success:#437a22;--shadow:0 4px 24px rgba(40,37,29,.08)}
+[data-theme="dark"]{--bg:#0b0a09;--surface:#131211;--surface-2:#1a1918;--border:rgba(205,204,202,.08);--text:#cdccca;--muted:#797876;--faint:#5a5957;--primary:#4f98a3;--primary-h:#227f8b;--success:#6daa45;--shadow:0 4px 24px rgba(0,0,0,.4)}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh}
+a{color:var(--primary);text-decoration:none}
+a:hover{text-decoration:underline}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:color-mix(in oklab,var(--bg) 85%,transparent);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 5vw}
+.nav-inner{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;height:60px;gap:24px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px}
+.nav-links{display:flex;align-items:center;gap:24px;font-size:13px;color:var(--muted)}
+.nav-links a{color:var(--muted);transition:color .15s}.nav-links a:hover{color:var(--text);text-decoration:none}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 18px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;border:none;font-family:'Inter',sans-serif}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:0 2px 8px color-mix(in oklab,var(--primary) 35%,transparent)}
+.btn-primary:hover{background:var(--primary-h);text-decoration:none}
+.btn-ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+.btn-ghost:hover{background:var(--surface-2);text-decoration:none}
+.icon-btn{background:none;border:none;cursor:pointer;color:var(--muted);padding:6px;border-radius:6px;font-size:18px;line-height:1;transition:color .15s}
+.icon-btn:hover{color:var(--text)}
+
+/* HERO */
+.hero{max-width:1100px;margin:auto;padding:100px 5vw 80px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface-2);border:1px solid var(--border);border-radius:100px;padding:4px 14px;font-size:12px;font-weight:500;color:var(--muted);margin-bottom:28px}
+.hero-badge .dot{width:6px;height:6px;border-radius:50%;background:var(--success)}
+h1{font-size:clamp(2.5rem,6vw,5rem);font-weight:800;line-height:1.08;letter-spacing:-.03em;max-width:900px;margin:0 auto 20px}
+h1 .accent{color:var(--primary)}
+.hero-sub{font-size:clamp(1rem,2vw,1.25rem);color:var(--muted);max-width:600px;margin:0 auto 44px;line-height:1.65}
+.hero-actions{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap}
+.hero-note{margin-top:16px;font-size:12px;color:var(--faint)}
+
+/* STATS */
+.stats{display:flex;justify-content:center;gap:48px;padding:40px 5vw;border-top:1px solid var(--border);border-bottom:1px solid var(--border);flex-wrap:wrap}
+.stat{text-align:center}
+.stat-value{font-size:2rem;font-weight:800;letter-spacing:-.02em;color:var(--text)}
+.stat-label{font-size:12px;color:var(--muted);margin-top:2px}
+
+/* FEATURES */
+.section{max-width:1100px;margin:auto;padding:80px 5vw}
+.section-label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--primary);margin-bottom:12px}
+h2{font-size:clamp(1.75rem,3.5vw,2.75rem);font-weight:800;letter-spacing:-.02em;line-height:1.15;margin-bottom:16px}
+.section-sub{font-size:1rem;color:var(--muted);max-width:560px;line-height:1.65;margin-bottom:56px}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+.feature-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;transition:box-shadow .2s}
+.feature-card:hover{box-shadow:var(--shadow)}
+.feat-icon{font-size:2rem;margin-bottom:14px}
+.feat-title{font-size:15px;font-weight:700;margin-bottom:6px}
+.feat-desc{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* CODE */
+.code-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;overflow-x:auto;color:var(--text)}
+.code-block .comment{color:var(--faint)}
+.code-block .cmd{color:var(--primary)}
+
+/* COMPARISON TABLE */
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:12px 16px;font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+td{padding:14px 16px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.check{color:var(--success);font-size:18px}
+.cross{color:var(--faint);font-size:18px}
+.hl-row{background:color-mix(in oklab,var(--primary) 5%,transparent)}
+.hl-row td:first-child{font-weight:700;color:var(--primary)}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:40px 5vw;text-align:center}
+.footer-inner{max-width:1100px;margin:auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-links{display:flex;gap:20px;font-size:13px;color:var(--muted)}
+.footer-links a{color:var(--muted)}
+.footer-copy{font-size:12px;color:var(--faint)}
+
+@media(max-width:640px){
+  .nav-links{display:none}
+  .stats{gap:24px}
+  .footer-inner{justify-content:center;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="#01696f"/>
+        <path d="M7 10h14M7 14h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="20" cy="18" r="4" stroke="white" stroke-width="1.5" fill="none"/>
+        <path d="M18.5 18h3M20 16.5v3" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      ZoomTranslate
+    </div>
+    <div class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#compare">Compare</a>
+      <a href="#install">Install</a>
+      <a href="https://github.com/luisitoys12/zoom-translate" target="_blank" rel="noopener">GitHub</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">🌙</button>
+      <a href="#install" class="btn btn-primary">↓ Install Free</a>
+    </div>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span> Open Source · MIT License · Free Forever</div>
+  <h1>Translate any meeting<br><span class="accent">in real time.</span></h1>
+  <p class="hero-sub">A Chrome extension + web dashboard that transcribes and translates Zoom, Google Meet and Microsoft Teams conversations — live, bidirectional, and without monthly fees.</p>
+  <div class="hero-actions">
+    <a href="#install" class="btn btn-primary" style="font-size:15px;padding:12px 28px">🔌 Install Extension</a>
+    <a href="https://github.com/luisitoys12/zoom-translate" target="_blank" rel="noopener" class="btn btn-ghost" style="font-size:15px;padding:12px 28px">★ Star on GitHub</a>
+  </div>
+  <p class="hero-note">Free. No account required for basic use. Chrome &amp; Edge supported.</p>
+</section>
+
+<div class="stats">
+  <div class="stat"><div class="stat-value">12+</div><div class="stat-label">Languages supported</div></div>
+  <div class="stat"><div class="stat-value">0ms*</div><div class="stat-label">Audio leaves your device</div></div>
+  <div class="stat"><div class="stat-value">∞</div><div class="stat-label">Minutes included</div></div>
+  <div class="stat"><div class="stat-value">MIT</div><div class="stat-label">Open source license</div></div>
+</div>
+
+<section class="section" id="features">
+  <div class="section-label">Features</div>
+  <h2>Everything you need.<br>Nothing you pay for.</h2>
+  <p class="section-sub">Built to replace paid solutions with a fully open, extensible alternative.</p>
+  <div class="features-grid">
+    <div class="feature-card"><div class="feat-icon">🎙️</div><div class="feat-title">Real-time transcription</div><div class="feat-desc">Web Speech API runs entirely in your browser. Audio never leaves your device.</div></div>
+    <div class="feature-card"><div class="feat-icon">🌐</div><div class="feat-title">Live bidirectional translation</div><div class="feat-desc">ES ↔ EN ↔ FR ↔ PT ↔ DE ↔ JA. Powered by Google Translate API or LibreTranslate.</div></div>
+    <div class="feature-card"><div class="feat-icon">👥</div><div class="feat-title">Shared sessions</div><div class="feat-desc">Share a link so guests see your live subtitles without installing anything.</div></div>
+    <div class="feature-card"><div class="feat-icon">📹</div><div class="feat-title">Works on Zoom, Meet &amp; Teams</div><div class="feat-desc">Overlay subtitles on any browser-based meeting. No Zoom account needed.</div></div>
+    <div class="feature-card"><div class="feat-icon">📤</div><div class="feat-title">Export transcripts</div><div class="feat-desc">Download your meeting as .txt, .srt subtitles, or .docx document.</div></div>
+    <div class="feature-card"><div class="feat-icon">🔒</div><div class="feat-title">Privacy first</div><div class="feat-desc">Only text (never audio) is sent to translation APIs. Full control over your data.</div></div>
+    <div class="feature-card"><div class="feat-icon">🧩</div><div class="feat-title">Supabase backend</div><div class="feat-desc">Meeting history, session sharing and realtime sync powered by open source Supabase.</div></div>
+    <div class="feature-card"><div class="feat-icon">🌙</div><div class="feat-title">Dark mode + i18n</div><div class="feat-desc">Full Spanish and English UI. System theme auto-detection.</div></div>
+  </div>
+</section>
+
+<section class="section" id="compare" style="padding-top:0">
+  <div class="section-label">Comparison</div>
+  <h2>Why ZoomTranslate?</h2>
+  <p class="section-sub">Compare us to the paid alternatives.</p>
+  <div style="overflow-x:auto;border:1px solid var(--border);border-radius:16px">
+  <table>
+    <thead><tr>
+      <th>Feature</th>
+      <th class="hl-row">ZoomTranslate</th>
+      <th>Kudo</th>
+      <th>Interprefy</th>
+      <th>Wordly</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Price</td><td class="hl-row"><strong style="color:var(--success)">Free</strong></td><td>$$$</td><td>$$$</td><td>$$</td></tr>
+      <tr><td>Open source</td><td class="hl-row"><span class="check">✓</span></td><td><span class="cross">×</span></td><td><span class="cross">×</span></td><td><span class="cross">×</span></td></tr>
+      <tr><td>Chrome extension</td><td class="hl-row"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="cross">×</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Works on Zoom Web</td><td class="hl-row"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Works on Google Meet</td><td class="hl-row"><span class="check">✓</span></td><td><span class="cross">×</span></td><td><span class="cross">×</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Shared live session link</td><td class="hl-row"><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td><td><span class="check">✓</span></td></tr>
+      <tr><td>Self-hostable</td><td class="hl-row"><span class="check">✓</span></td><td><span class="cross">×</span></td><td><span class="cross">×</span></td><td><span class="cross">×</span></td></tr>
+      <tr><td>Audio stays on device</td><td class="hl-row"><span class="check">✓</span></td><td><span class="cross">×</span></td><td><span class="cross">×</span></td><td><span class="cross">×</span></td></tr>
+      <tr><td>Export .srt subtitles</td><td class="hl-row"><span class="check">✓</span></td><td><span class="cross">×</span></td><td><span class="check">✓</span></td><td><span class="cross">×</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section class="section" id="install" style="padding-top:0">
+  <div class="section-label">Quick Start</div>
+  <h2>Up and running in 2 minutes.</h2>
+  <p class="section-sub">No account required for basic use.</p>
+  <div class="code-block">
+<span class="comment"># 1. Clone the repo</span>
+<span class="cmd">git clone https://github.com/luisitoys12/zoom-translate.git</span>
+
+<span class="comment"># 2. Open Chrome → chrome://extensions → Developer mode ON</span>
+<span class="comment"># 3. Load unpacked → select the extension/ folder</span>
+
+<span class="comment"># Optional: run the web dashboard locally</span>
+<span class="cmd">cd web && pnpm install && pnpm dev</span>
+  </div>
+  <p style="margin-top:20px;font-size:13px;color:var(--muted)">
+    Get a free Google Translate API key at
+    <a href="https://console.cloud.google.com/apis/library/translate.googleapis.com" target="_blank" rel="noopener">Google Cloud Console</a>
+    (500k characters/month free).
+  </p>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="nav-logo">
+      <svg width="22" height="22" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="#01696f"/>
+        <path d="M7 10h14M7 14h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="20" cy="18" r="4" stroke="white" stroke-width="1.5" fill="none"/>
+        <path d="M18.5 18h3M20 16.5v3" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      ZoomTranslate
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/luisitoys12/zoom-translate" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/luisitoys12/zoom-translate/issues" target="_blank" rel="noopener">Issues</a>
+      <a href="https://github.com/luisitoys12/zoom-translate/blob/main/LICENSE" target="_blank" rel="noopener">MIT License</a>
+    </div>
+    <div class="footer-copy">© 2026 Luis Martinez Sandoval / cush media</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const t=document.getElementById('themeToggle'),r=document.documentElement;
+  let d=r.getAttribute('data-theme')||'dark';
+  t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.textContent=d==='dark'?'🌙':'☀️';
+  });
+})();
+</script>
+</body>
+</html>
