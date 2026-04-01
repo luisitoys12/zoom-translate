@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ZoomTranslate</title>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+        <rect width="28" height="28" rx="8" fill="#01696f"/>
+        <path d="M7 10h14M7 14h8" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="20" cy="18" r="4" stroke="white" stroke-width="1.5" fill="none"/>
+        <path d="M18.5 18h3M20 16.5v3" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <span>ZoomTranslate</span>
+    </div>
+    <button id="themeToggle" class="icon-btn" title="Toggle theme">🌙</button>
+  </header>
+
+  <div class="status-row">
+    <div class="dot" id="statusDot"></div>
+    <span id="statusText">Listo</span>
+  </div>
+
+  <div class="field">
+    <label>Tu idioma</label>
+    <select id="sourceLang">
+      <option value="es-MX">🇲🇽 Español (MX)</option>
+      <option value="es-ES">🇪🇸 Español (ES)</option>
+      <option value="en-US">🇺🇸 English (US)</option>
+      <option value="fr-FR">🇫🇷 Français</option>
+      <option value="pt-BR">🇧🇷 Português</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Traducir a</label>
+    <select id="targetLang">
+      <option value="en">🇺🇸 English</option>
+      <option value="es">🇲🇽 Español</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="pt">🇧🇷 Português</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="ja">🇯🇵 日本語</option>
+      <option value="zh">🇨🇳 中文</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>API Key (Google Translate)</label>
+    <input type="password" id="apiKey" placeholder="AIzaSy...">
+  </div>
+
+  <div class="field">
+    <label>Sesión compartida</label>
+    <div class="session-row">
+      <input type="text" id="sessionId" placeholder="auto" readonly>
+      <button id="copySession" class="icon-btn" title="Copiar link">📋</button>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="btn-primary" id="mainBtn">▶ Iniciar</button>
+    <button class="btn-secondary" id="saveBtn">Guardar config</button>
+  </div>
+
+  <div class="footer">
+    <a href="https://luisitoys12.github.io/zoom-translate" target="_blank">Dashboard</a>
+    · <a href="https://github.com/luisitoys12/zoom-translate" target="_blank">GitHub</a>
+  </div>
+</div>
+<script src="popup.js"></script>
+</body>
+</html>
